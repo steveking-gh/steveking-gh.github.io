@@ -34,8 +34,29 @@ I use and much appreciate [Visual Studio Code](https://code.visualstudio.com/) f
 
 ## Project directory structure
 
-Per the gripes in Part 1, tyring to successfully organize my sub-modules was a headache.  After trial and error, the following structure works without causing surprises:
+Organizing libraries in a way that other libraries can find them was a headache.  After trial and error, the following structure works without causing surprises:
 
+| ![project directory structure diagram](/images/project_structure.svg) | 
+|:--:| 
+| *Project directory structure* |
+
+Let's examine a few points in detail.
+
+### The root package
+The package identified in the top Cargo.toml of the project is the [root package](https://doc.rust-lang.org/cargo/reference/workspaces.html#root-package).  This is __MyProject__ in the diagram above.  List all the other local packages (usually your libraries) in the \[workspace\] part of the Cargo.toml file.  These are the __foo__ and __bar__ libraries in the diagram.
+
+### Local library dependencies
+The root package Cargo.toml refers to local dependencies using the _path_ property.  For example if the root project depends on the local foo library:
+
+    # root Cargo.toml
+    [dependencies]
+    foo = { path = "./foo" }
+
+Similiarly, if the foo library depends on the local bar library:
+
+    # foo's Cargo.toml
+    [dependencies]
+    bar = { path = "../bar" }
 
 
 
