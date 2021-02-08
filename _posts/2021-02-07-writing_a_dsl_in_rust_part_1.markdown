@@ -21,11 +21,11 @@ Online searches show many developers struggling to satisfy Rust's borrow checker
 
 The biggest problems in this effort were the false starts. Rust's library ecosystem swarms with activity, but lacks especially in documentation. Approaches that appeared promising at first, e.g. the lalrpop parser, lead me to eventually switch gears in dissatisfaction.
 
-Another initial irritation was Rust's module system.  Rust module handling is entwined with [cargo](https://doc.rust-lang.org/cargo) which is Rust's package manager and build system. Coming from the dirty but obvious #include's of C/C++, I expected my project directory structure to be _the_ module layout.  Alas, cargo (or rustc?) would complain a module right under its nose could not be found.
+Another initial irritation was Rust's module system.  Rust module handling is entwined with [cargo](https://doc.rust-lang.org/cargo) which is Rust's package manager and build system. Coming from the dirty but obvious #includes of C/C++, I expected my project directory structure to be _the_ module layout.  Alas, cargo (or rustc?) would complain a module right under its nose could not be found.
 
 ## Why a domain specific langauge?
 
-As a realistic evaluation of Rust, DSL's are a juicy choice. DSL's have many moving parts and complex error handling requirements. They avoid the need for a GUI and lend themselves well to unit and fuzz testing. After the initial heavy lift, DSLs are fun to hack on.
+As a realistic evaluation of Rust, DSL's are a juicy choice. DSL's have many moving parts and complex error handling requirements. They avoid the need for a GUI and lend themselves well to unit and fuzz testing. After the initial heavy lift, DSL's are fun to hack on.
 
 The DSL I'll talk about is brink. Brink is a curly-brace-semicolon style declarative language for linking files together from constituent parts. The primary use case is defining flash or other non-volatile memory images for embedded systems. Embedded systems often need a boot image that falls somewhere between a dumb blob of bits and whole file system.
 

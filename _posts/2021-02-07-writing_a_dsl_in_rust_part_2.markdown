@@ -13,7 +13,7 @@ If you don't already have Rust installed, then start with the [official guide](h
 
 ### Windows WSL2 dependencies
 
-I use [WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10) running Ubuntu 20.04 for most development.  That's just personal preference and Rust runs fine in native windows.
+I use [WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10) running Ubuntu 20.04 for most development.  Rust runs in native windows too except for fuzz testing which has some external Linux dependencies.
 
 I like the [cargo-edit](https://crates.io/crates/cargo-edit) extension, which has a few dependencies not installed by default if you go with WSL2.
 
@@ -34,7 +34,7 @@ I use and much appreciate [Visual Studio Code](https://code.visualstudio.com/) f
 
 ## Project directory structure
 
-Organizing libraries in a way that other libraries can find them was a headache.  After trial and error, the following structure works without causing surprises:
+After trial and error, the following structure worked without causing surprises.  There are other ways to organize a large-ish project.
 
 | ![project directory structure diagram](/images/project_structure.svg) | 
 |:--:| 
@@ -43,20 +43,31 @@ Organizing libraries in a way that other libraries can find them was a headache.
 Let's examine a few points in detail.
 
 ### The root package
-The package identified in the top Cargo.toml of the project is the [root package](https://doc.rust-lang.org/cargo/reference/workspaces.html#root-package).  This is __MyProject__ in the diagram above.  List all the other local packages (usually your libraries) in the \[workspace\] part of the Cargo.toml file.  These are the __foo__ and __bar__ libraries in the diagram.
+The package identified in the `Cargo.toml` of the top directory in the project is the [root package](https://doc.rust-lang.org/cargo/reference/workspaces.html#root-package).  This is __MyProject__ in the diagram above.  List all the other local packages (usually your libraries) in the \[workspace\] part of the Cargo.toml file.  These are the `foo` and `bar` libraries in the diagram.
 
 ### Local library dependencies
-The root package Cargo.toml refers to local dependencies using the _path_ property.  For example if the root project depends on the local foo library:
+The root package `Cargo.toml` refers to local dependencies using the `path` property.  For example if the root project depends on the local `foo` library:
 
     # root Cargo.toml
     [dependencies]
     foo = { path = "./foo" }
 
-Similiarly, if the foo library depends on the local bar library:
+Similiarly, if the `foo` library depends on the local `bar` library, then we need to refer up one directory level with `../`
 
     # foo's Cargo.toml
     [dependencies]
     bar = { path = "../bar" }
 
+## Fuzz Early and Often
 
+[Fuzz testing](https://en.wikipedia.org/wiki/Fuzzing) means blasting your library with pseudo-randomized input to try to cause crashes.  Good fuzz testers try to focus on input conditions that matter rather than pure randomness.  For example, consider a program that takes a 32-bit integer input.  Values like 0, 1, and -1 are more likely to be coding corner cases than the wasteland between 2 and 4294967294.  You don't want a fuzz tester spending too much time in the boring middle.
 
+Notice that each library can have its own [fuzz testing](https://en.wikipedia.org/wiki/Fuzzing) sub-project.  Fuzz testing your libraries as development progresses finds problems early and encourages real error handling.  Cargo-fuzz will not complain if your library returns errors, but will count all crashes as bugs.  It doesn't matter if you saw the crash coming with a `panic!()`, it's still a crash.  __You'll need to refactor all crashes as errors returned to the caller__.  After that tidying up, fuzz testing will find crashes you did _not_ see coming.
+
+For Rust, the easiest fuzzing choice is [cargo-fuzz](https://github.com/rust-fuzz/cargo-fuzz).
+
+    cargo install cargo-fuzz
+    cd <my library dir>
+    cargo fuzz init
+
+The `cargo fuzz init` command creates a `fuzz` subdirectory containing its own package and `Cargo.toml` file.  Typical directory structure looks like this:
