@@ -62,7 +62,7 @@ Similiarly, if the `foo` library depends on the local `bar` library, then we nee
 
 [Fuzz testing](https://en.wikipedia.org/wiki/Fuzzing) means blasting your library with pseudo-randomized input to try to cause crashes.  Good fuzz testers try to focus on input conditions that matter rather than pure randomness.  For example, consider a program that takes a 32-bit integer input.  Values like 0, 1, and -1 are more likely to be coding corner cases than the wasteland between 2 and 4294967294.  You don't want a fuzz tester spending too much time in the boring middle.
 
-Notice that each library can have its own [fuzz testing](https://en.wikipedia.org/wiki/Fuzzing) sub-project.  Fuzz testing your libraries as development progresses finds problems early and encourages real error handling.  Cargo-fuzz will not complain if your library returns errors, but will count all crashes as bugs.  It doesn't matter if you saw the crash coming with a `panic!()`, it's still a crash.  __You'll need to refactor all crashes as errors returned to the caller__.  After that tidying up, fuzz testing will find crashes you did _not_ see coming.
+Notice that each library can have its own [fuzz testing](https://en.wikipedia.org/wiki/Fuzzing) sub-project.  Fuzz testing your libraries as development progresses finds problems early and encourages real error handling.  Cargo-fuzz will not complain if your library returns errors, but will count all crashes as bugs.  It doesn't matter if you saw the crash coming with a `panic!()`, it's still a crash.  __You'll need to refactor all crashes that result from bad input as errors returned to the caller__.  After that tidying up, fuzz testing will still find crashes, but these are the interesting cases you did _not_ see coming.
 
 For Rust, the easiest fuzzing choice is [cargo-fuzz](https://github.com/rust-fuzz/cargo-fuzz).
 
@@ -71,3 +71,20 @@ For Rust, the easiest fuzzing choice is [cargo-fuzz](https://github.com/rust-fuz
     cargo fuzz init
 
 The `cargo fuzz init` command creates a `fuzz` subdirectory containing its own package and `Cargo.toml` file.  Typical directory structure looks like this:
+```
+    fuzz
+    ├── Cargo.toml
+    └── fuzz_targets
+        └── fuzz_target_1.rs
+```
+You must edit the fuzz_target_1.rs file to suit your library.
+
+The fuzz packages in each library directory don't do anything during a normal `cargo build`.  At the time of writing (Rust 1.49), you need the +nightly option when running the fuzzer.  The typical commands are:
+```
+    cd <library containing a fuzz directory>
+    cargo +nightly fuzz run fuzz_target_1
+```
+
+For better results, you'll need to supply a _corpus_ of inputs that give the fuzzer a clue about your inputs.  In the case of a DSL like brink, the corpus is just a bunch of brink input files copied from the tests directory.
+
+## Recommended packages
