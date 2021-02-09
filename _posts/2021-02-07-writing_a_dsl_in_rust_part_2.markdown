@@ -71,20 +71,43 @@ For Rust, the easiest fuzzing choice is [cargo-fuzz](https://github.com/rust-fuz
     cargo fuzz init
 
 The `cargo fuzz init` command creates a `fuzz` subdirectory containing its own package and `Cargo.toml` file.  Typical directory structure looks like this:
+
 ```
     fuzz
     ├── Cargo.toml
     └── fuzz_targets
         └── fuzz_target_1.rs
 ```
-You must edit the fuzz_target_1.rs file to suit your library.
+
+You must edit the fuzz_target_1.rs file to suit your library.  For example, here's the [fuzz wrapper function](https://github.com/steveking-gh/brink/blob/master/ast/fuzz/fuzz_targets/fuzz_target_1.rs) used by Brink's abstract syntax tree (AST):
+
+```rust
+#![no_main]
+use libfuzzer_sys::fuzz_target;
+use ast::Ast;
+use std::io::Write;
+use diags::Diags;
+
+// The fuzzer calls this function repeatedly
+fuzz_target!(|data: &[u8]| {
+    if let Ok(str_in) = std::str::from_utf8(data) {
+        // Set the verbosity to 0 to avoid console error
+        // messages during the test.
+        let mut diags = Diags::new("fuzz_target_1",str_in, 0);
+        let _ = Ast::new(str_in, &mut diags);
+    }
+});
+```
+
+In the code above, the fuzz tester supplies a randomized `u8` array.  To test AST logic, we pretend this input is the user's Brink source code.  You can ignore the `diags` object for now and otherwise we convert from `[u8]` and supply the "source code" to the AST constructor.
 
 The fuzz packages in each library directory don't do anything during a normal `cargo build`.  At the time of writing (Rust 1.49), you need the +nightly option when running the fuzzer.  The typical commands are:
-```
+
     cd <library containing a fuzz directory>
     cargo +nightly fuzz run fuzz_target_1
-```
 
-For better results, you'll need to supply a _corpus_ of inputs that give the fuzzer a clue about your inputs.  In the case of a DSL like brink, the corpus is just a bunch of brink input files copied from the tests directory.
+For better results, you'll need to supply a _corpus_ of inputs that give the fuzzer a clue about your inputs.  In the case of a DSL like Brink, the corpus is just a bunch of Brink input files copied from the tests directory.
 
-## Recommended packages
+## Packages used in Brink
+
+
