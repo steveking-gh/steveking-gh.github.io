@@ -108,6 +108,24 @@ The fuzz packages in each library directory don't do anything during a normal `c
 
 For better results, you'll need to supply a _corpus_ of inputs that give the fuzzer a clue about your inputs.  In the case of a DSL like Brink, the corpus is just a bunch of Brink input files copied from the tests directory.
 
-## Packages used in Brink
+## Libraries used in Brink
+
+This isn't a complete list, but highlights worth mentioning.
+
+|__Library__| __Purpose__ |
+| [clap](https://docs.rs/clap) | command line handling |
+| [fern](https://docs.rs/fern) | Debug logging |
+| [logos](https://docs.rs/logos) | Tokenizing (aka lexing) of user source files |
+| [anyhow](https://docs.rs/anyhow) | Friendly error (Result<>) enhancements |
+| [indextree](https://docs.rs/indextree) | Rust friendly tree structures |
+| [codespan-reporting](https://docs.rs/codespan-reporting) | Beautiful reporting of user source code errors |
+| [parseint](https://docs.rs/parse_int) | Nice string to integer conversion |
 
 
+What about a [parsing library](https://lib.rs/parsing)?  The tl;dr is that Brink uses a hand written recursive descent parser with Pratt parsing for expressions.  More on this later.
+
+At the start of the project, I wanted (still do!) the following:
+* To describe Brink's language using [BNF](https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form)
+* A parser generator that produced real and visible Rust code.  Hiding the complexity of a parser generator behind macros sounds terrifying.  The additional build step is a small price to pay.
+
+That led me to [lalrpop](https://docs.rs/lalrpop) written by none other than core Rust developer [Niko Matsakis](https://github.com/nikomatsakis).  Lalrpop even had built-in lexing with ability to handle C style comments.  The documentation wasn't extensive, but just enough and I gave lalrpop a serious try.  Eventually though, I couldn't generate the kind of user error messages I wanted and moved on.

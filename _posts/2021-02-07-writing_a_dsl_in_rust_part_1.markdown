@@ -43,3 +43,4 @@ Secondly, I wanted to get all the compiler infrastructure correct before heaping
 
 Finally, more a hope than a goal, is to get feedback on how this approach could improve. Being new to rust and no particular authority in compiler design, others may have something helpful to say.
 
+Next: [Part 2]({% link _posts/2021-02-07-writing_a_dsl_in_rust_part_2.markdown %}).
