@@ -9,7 +9,7 @@ categories: Rust
 
 ## Prereqs
 
-If you don't already have Rust installed, then start with the [official guide](https://www.rust-lang.org/learn/get-started).
+If you don't already have Rust installed, then start with the [Install Rust guide](https://www.rust-lang.org/tools/install).  Like the guide recommends, let `rustup` take control rather than your OS's package manager (dnf, apt, etc).
 
 ### Windows WSL2 dependencies
 
@@ -30,11 +30,11 @@ You'll also need the [fuzz testing tool](https://github.com/rust-fuzz/cargo-fuzz
 
 ### Editor
 
-I use and much appreciate [Visual Studio Code](https://code.visualstudio.com/) for Rust development.  Interop with WSL2 environments is amazingly smooth.  Rust-wise, there are _a lot_ of extensions available, but I'm only using the awesome **rust-analyzer** extension.  You'll also want the **CodeLLDB** extension for debugging.
+I use and much appreciate [Visual Studio Code](https://code.visualstudio.com/) for Rust development.  Interop with WSL2 environments is amazingly smooth.  Rust-wise, there are _a lot_ of extensions available, but I'm using the awesome **rust-analyzer** extension.  You'll also want the **CodeLLDB** extension for debugging.
 
 ## Project directory structure
 
-After trial and error, the following structure worked without causing surprises.  There are other ways to organize a large-ish project.
+After much trial and error, the following structure worked without causing surprises.  There are other ways to organize a large-ish project.
 
 | ![project directory structure diagram](/images/project_structure.svg) | 
 |:--:| 
@@ -52,11 +52,18 @@ The root package `Cargo.toml` refers to local dependencies using the `path` prop
     [dependencies]
     foo = { path = "./foo" }
 
-Similiarly, if the `foo` library depends on the local `bar` library, then we need to refer up one directory level with `../`
+Similarly, if the `foo` library depends on the local `bar` library, then we need to refer up one directory level with `../`
 
     # foo's Cargo.toml
     [dependencies]
     bar = { path = "../bar" }
+
+Modularizing a big project into private libraries is good practice in general and in Rust.  Sadly, the `cargo publish` command expects a flat earth where an app's internal libraries must exist as free-standing crates!  See [Closed and unfixed Issue #2224](https://github.com/rust-lang/rfcs/pull/2224).  In practical terms, you must choose:
+* pollute [crates.io](https://crates.io/) with internal-only libraries
+* create a monolithic code structure without the use of internal libraries
+* Don't use `cargo publish` to publish your app
+
+I fell ass-backward into the third option.
 
 ## Fuzz Early and Often
 
@@ -126,6 +133,7 @@ What about a [parsing library](https://lib.rs/parsing)?  The tl;dr is that Brink
 
 At the start of the project, I wanted (still do!) the following:
 * To describe Brink's language using [BNF](https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form)
-* A parser generator that produced real and visible Rust code.  Hiding the complexity of a parser generator behind macros sounds terrifying.  The additional build step is a small price to pay.
+* A parser generator that produced real and visible Rust code.  Hiding the complexity of a parser generator behind macros sounds terrifying.  The additional build step is a small price to pay for transparency of operation.
+* A parser that produced an abstract syntax tree, or made it straightforward for me to do so.
 
-That led me to [lalrpop](https://docs.rs/lalrpop) written by none other than core Rust developer [Niko Matsakis](https://github.com/nikomatsakis).  Lalrpop even had built-in lexing with ability to handle C style comments.  The documentation wasn't extensive, but just enough and I gave lalrpop a serious try.  Eventually though, I couldn't generate the kind of user error messages I wanted and moved on.
+That led me to [lalrpop](https://docs.rs/lalrpop) written by none other than core Rust developer [Niko Matsakis](https://github.com/nikomatsakis).  Lalrpop even had built-in lexing with ability to handle C-style comments.  The documentation wasn't extensive, but just enough and I gave lalrpop a serious try.  However, I couldn't generate the error messages I wanted.  Eventually I switched to hand written recursive descent.
