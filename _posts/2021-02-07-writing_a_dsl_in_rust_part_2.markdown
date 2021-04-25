@@ -86,7 +86,7 @@ This isn't a complete list, but highlights worth mentioning.
 | [parseint](https://docs.rs/parse_int) | Nice string to integer conversion |
 
 
-What about a [parsing library](https://lib.rs/parsing)?  The tl;dr is that Brink uses a hand written recursive descent parser with precedence climbing for sane expressions.  More on this later.
+What about a [parsing library](https://lib.rs/parsing)?  I wanted to use one, but the end result of my travails is that Brink uses a hand written recursive descent parser with precedence climbing.  More on this later.
 
 At the start of the project, I wanted (still do!) the following:
 * To describe Brink's language using [BNF](https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form)

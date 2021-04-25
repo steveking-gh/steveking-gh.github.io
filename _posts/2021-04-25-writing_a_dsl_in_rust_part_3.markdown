@@ -105,4 +105,4 @@ Here's the corresponding `tests/integration.rs` test for `fuzz_found_15.brink`. 
         .stderr(predicates::str::contains("[AST_21]"));
     }
 
-After this due diligence, then go a fix your actual bug.
+After this due diligence, then go a fix your actual bug.  The `predicates::str::contains("[AST_21]")` expression checks that Brink produced the expected error message.  More about error handling in a later post.
