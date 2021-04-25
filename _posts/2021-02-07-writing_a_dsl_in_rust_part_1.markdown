@@ -1,14 +1,16 @@
 ---
 layout: post
-title:  "Writing a Domain Specific Language in Rust, Part 1"
+title:  "Writing a Domain Specific Language in Rust, Part 1 - Introduction"
 date:   2021-02-07 18:00:00 -0800
 categories: Rust
 ---
+
 
 **tl;dr** - This _Part 1_ is just fluffy stuff.  Those wishing to skip this majestic but emotionally draining backstory can skip to [Part 2]({% link _posts/2021-02-07-writing_a_dsl_in_rust_part_2.markdown %}).
 
 Before anyone sets their hopes too high, the subject of this article is my first big venture into Rust programming.  Nevertheless, I hope the series can help others trying to start out.
 
+![Rust Logo thanks to LogRocket](/images/rust_logo.jpg)
 ## Rust
 
 If you're here, you've probably at least heard of
@@ -63,5 +65,6 @@ Here's a simple and complete Brink source file:
     section hello { wrs "Hello World!\n"; }
     output hello;
 
+This program writes the string "Hello World!\n" to an output file with the default name `output.bin`.  I'm not going to get too much into the value proposition of brink.  This series will focus on the interesting rusty aspects of implementing a DSL.
 
 Next: [Part 2]({% link _posts/2021-02-07-writing_a_dsl_in_rust_part_2.markdown %}).
