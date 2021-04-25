@@ -94,3 +94,5 @@ At the start of the project, I wanted (still do!) the following:
 * A parser that produced an abstract syntax tree, or made it straightforward for me to do so.
 
 That led me to abortive attempt to use [lalrpop](https://docs.rs/lalrpop) written by none other than core Rust developer [Niko Matsakis](https://github.com/nikomatsakis).  Lalrpop even had built-in lexing with ability to handle C-style comments.  The documentation wasn't extensive, but just enough and I gave lalrpop a serious try.  However, I couldn't generate the error messages I wanted.  Eventually I switched to hand written recursive descent.
+
+Next: [Part 3]({% link _posts/2021-04-25-writing_a_dsl_in_rust_part_3.markdown %}).

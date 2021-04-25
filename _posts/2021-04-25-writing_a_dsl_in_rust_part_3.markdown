@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Writing a Domain Specific Language in Rust, Part 3 - Fuzz Early and Often"
-date:   2021-02-07 18:00:00 -0800
+date:   2021-04-25 10:00:00 -0800
 categories: Rust
 ---
 
