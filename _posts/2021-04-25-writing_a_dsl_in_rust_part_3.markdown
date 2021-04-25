@@ -93,4 +93,16 @@ __DO NOT JUST FIX YOUR BUG!__  Instead, copy the failing input to your tests dir
 
 Well, I never thought to check that trailing ',' before the semicolon.  Fortunately, the fuzzer brute forces its way into these untidy corners.
 
-Here's the corresponding integration test for `fuzz_found_15.brink`.  Note we expect this test to fail.
+Here's the corresponding `tests/integration.rs` test for `fuzz_found_15.brink`.  We expect this test to fail since the input breaks Brink's grammar rules, but we want a nice error message instead of a `panic!()`.
+
+    #[test]
+    fn fuzz_found_15() {
+        let _cmd = Command::cargo_bin("brink")
+        .unwrap()
+        .arg("tests/fuzz_found_15.brink")
+        .assert()
+        .failure()
+        .stderr(predicates::str::contains("[AST_21]"));
+    }
+
+After this due diligence, then go a fix your actual bug.
