@@ -81,7 +81,7 @@ On my system, The fuzz tester executes about 47K tests per second.
 
 ## The Fuzzer Found a Crash!
 
-When the fuzz tester finds a crash, you'll see the path the responsible source file.  Helpfully, the fuzzer provides the exact command line to reduce the failing input to a minimum example.  I generally always run this extra step and then do further minimization by hand.
+When the fuzz tester finds a crash, you'll see the path to the responsible source file.  Helpfully, the fuzzer provides the exact command line to reduce the failing input to a minimum example.  I generally always run this extra step and then do further minimization by hand.
 
 __DO NOT JUST FIX YOUR BUG!__  Instead, copy the failing input to your tests directory as a corresponding integration test!  At the time of writing, Brink has 18 such cases, starting from fuzz_found_1.brink on up.  For example, here's `fuzz_found_15.brink`:
 
