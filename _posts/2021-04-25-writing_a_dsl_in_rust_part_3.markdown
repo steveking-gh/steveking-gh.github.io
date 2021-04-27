@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Writing a Domain Specific Language in Rust, Part 3 - Fuzz Early and Often"
+title:  "Writing a Domain Specific Language in Rust, Part 3 - Fuzz Early and Often"
 date:   2021-04-25 10:00:00 -0800
 categories: Rust
 ---
@@ -106,3 +106,5 @@ Here's the corresponding `tests/integration.rs` test for `fuzz_found_15.brink`. 
     }
 
 After this due diligence, then go a fix your actual bug.  The `predicates::str::contains("[AST_21]")` expression checks that Brink produced the expected error message.  More about error handling in a later post.
+
+Next: [Part 4]({% link _posts/2021-04-26-writing_a_dsl_in_rust_part_4.markdown %}).

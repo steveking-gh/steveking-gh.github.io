@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Writing a Domain Specific Language in Rust, Part 2 - Layout and Libraries"
+title:  "Writing a Domain Specific Language in Rust, Part 2 - Layout and Libraries"
 date:   2021-02-07 21:01:00 -0800
 categories: Rust
 ---

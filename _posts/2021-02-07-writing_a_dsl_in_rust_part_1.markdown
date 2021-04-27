@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Writing a Domain Specific Language in Rust, Part 1 - Introduction"
+title:  "Writing a Domain Specific Language in Rust, Part 1 - Introduction"
 date:   2021-02-07 18:00:00 -0800
 categories: Rust
 ---
