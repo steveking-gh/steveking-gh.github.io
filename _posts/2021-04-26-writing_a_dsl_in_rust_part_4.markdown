@@ -88,7 +88,7 @@ By this point, we're deep in DSL specific territory and your plan may need to de
 
 Next: [Part 5]({% link _posts/2021-05-30-writing_a_dsl_in_rust_part_5.markdown %}).
 
----
+----
 
 Banner photo by [Dan Meyers](https://unsplash.com/@dmey503?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/)
   
