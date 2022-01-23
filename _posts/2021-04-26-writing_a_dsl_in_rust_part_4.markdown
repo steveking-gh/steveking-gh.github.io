@@ -87,6 +87,7 @@ By this point, we're deep in DSL specific territory and your plan may need to de
 * Brink's VM needs a wrapper loop that _repeatedly_ executes the IR until all the internal characteristics (sizes, offsets, etc) of Brink's binary output stabilize.  Depending on your DSL, you may not need to worry about such a thing.
 
 Next: [Part 5]({% link _posts/2021-05-30-writing_a_dsl_in_rust_part_5.markdown %}).
+
 ---
 
 Banner photo by [Dan Meyers](https://unsplash.com/@dmey503?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/)
