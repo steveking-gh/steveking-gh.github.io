@@ -11,7 +11,7 @@ tl;dr - Part 5 is about avoiding pointer and reference complications with an are
 # Rocking the Arena
 For those of us coming from a C/C++ background, we know data structures like trees just *want* to use pointers.  Pointers provide a concise physical representation of a logical *edge* connecting one tree *node* to another.  As a tree grows, we change existing pointers and add new ones, making liberal use of null pointers as needed.
 
-Efficient as they are, building trees using pointery C/C++ notions does not work in safe Rust.  [Nick Cameron provides](https://github.com/nrc/r4cppp/blob/master/graphs/README.md) a detailed discussion of the trouble as regards graphs.  The problem boils down to Rusts strict reference rules blocking construction of a tree piece by piece.  For example, suppose we traverse from parent node to child node by getting a reference to the child.  Now the parent node and some local variable hold references, so we can't also get a mutable reference to perform an update in the child.  We'd be fine if trees popped into existence fully formed.
+Efficient as they are, building trees using pointery C/C++ notions does not work in safe Rust.  [Nick Cameron provides](https://github.com/nrc/r4cppp/blob/master/graphs/README.md) a detailed discussion of the trouble as regards graphs.  The problem boils down to Rust's strict reference rules blocking construction of a tree piece by piece.  For example, suppose we traverse from parent node to child node by getting a reference to the child.  Now the parent node and some local variable hold references, so we can't also get a mutable reference to perform an update in the child.  We'd be fine if trees popped into existence fully formed.
 
 What to do?
  
